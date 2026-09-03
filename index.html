@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Kourkoulis Software Solutions</title>
+	<style>
+		:root {
+			--bg-1: #0b1220;
+			--bg-2: #101a2e;
+			--bg-photo: url("https://images.unsplash.com/photo-1607799279861-4dd421887fb3?auto=format&fit=crop&w=1920&q=80");
+			--accent: #00c2a8;
+			--accent-2: #38bdf8;
+			--text: #eaf2ff;
+			--muted: #a9b8d4;
+			--card: rgba(16, 26, 46, 0.75);
+			--border: rgba(169, 184, 212, 0.2);
+			--shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+		}
+
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		html,
+		body {
+			width: 100%;
+			min-height: 100%;
+			font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+			color: var(--text);
+			scroll-behavior: smooth;
+		}
+
+		html {
+			background: radial-gradient(circle at 15% 15%, #172844 0%, var(--bg-1) 45%),
+									linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
+		}
+
+		body {
+			position: relative;
+			overflow-x: hidden;
+			background: transparent;
+		}
+
+		.bg-photo {
+			position: fixed;
+			inset: 0;
+			z-index: -3;
+			background-image: var(--bg-photo);
+			background-size: cover;
+			background-position: center;
+			opacity: 0.15;
+			filter: saturate(0.75) contrast(1.06);
+		}
+
+		.bg-grid {
+			position: fixed;
+			inset: 0;
+			z-index: -2;
+			background-image:
+				linear-gradient(rgba(56, 189, 248, 0.08) 1px, transparent 1px),
+				linear-gradient(90deg, rgba(56, 189, 248, 0.08) 1px, transparent 1px);
+			background-size: 36px 36px;
+			mask-image: radial-gradient(circle at center, black 35%, transparent 90%);
+			opacity: 0.55;
+		}
+
+		main {
+			width: min(1100px, 92%);
+			margin: 0 auto;
+		}
+
+		.language-switch {
+			position: fixed;
+			top: 1rem;
+			right: 1rem;
+			z-index: 11;
+			display: inline-flex;
+			gap: 0.4rem;
+			padding: 0.35rem;
+			border-radius: 999px;
+			background: rgba(11, 18, 32, 0.62);
+			border: 1px solid var(--border);
+			backdrop-filter: blur(6px);
+		}
+
+		.lang-option {
+			border: 1px solid rgba(56, 189, 248, 0.3);
+			background: rgba(56, 189, 248, 0.1);
+			color: #d9f4ff;
+			border-radius: 999px;
+			padding: 0.42rem 0.75rem;
+			font-size: 0.82rem;
+			font-weight: 700;
+			cursor: pointer;
+			transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+		}
+
+		.lang-option:hover {
+			transform: translateY(-1px);
+			background: rgba(56, 189, 248, 0.18);
+		}
+
+		.lang-option.active {
+			background: rgba(0, 194, 168, 0.2);
+			border-color: rgba(0, 194, 168, 0.75);
+			box-shadow: 0 0 0 1px rgba(0, 194, 168, 0.45), 0 0 16px rgba(0, 194, 168, 0.65);
+		}
+
+		section {
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 4rem 0;
+		}
+
+		.hero-wrap {
+			width: 100%;
+			max-width: 900px;
+			text-align: center;
+			background: var(--card);
+			border: 1px solid var(--border);
+			border-radius: 20px;
+			padding: 3rem 2rem;
+			box-shadow: var(--shadow);
+			backdrop-filter: blur(6px);
+			animation: rise-in 800ms ease-out both;
+		}
+
+		.hero-wrap h1 {
+			font-size: clamp(2rem, 6vw, 4rem);
+			letter-spacing: 0.03em;
+			margin-bottom: 1rem;
+			color: #ffffff;
+		}
+
+		.hero-wrap p {
+			font-size: clamp(1rem, 2.2vw, 1.25rem);
+			color: var(--muted);
+			max-width: 700px;
+			margin: 0 auto 2rem;
+		}
+
+		.hero-tag {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.45rem;
+			margin-bottom: 1.4rem;
+			border: 1px solid rgba(0, 194, 168, 0.4);
+			border-radius: 999px;
+			padding: 0.5rem 0.95rem;
+			font-size: 0.95rem;
+			color: #c9fff8;
+			background: rgba(0, 194, 168, 0.1);
+		}
+
+		.hero-btn {
+			border: 0;
+			cursor: pointer;
+			background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+			color: #03101c;
+			font-weight: 700;
+			font-size: 1rem;
+			padding: 0.85rem 1.4rem;
+			border-radius: 10px;
+			transition: transform 180ms ease, box-shadow 180ms ease;
+			box-shadow: 0 6px 18px rgba(56, 189, 248, 0.25);
+		}
+
+		.hero-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 10px 22px rgba(56, 189, 248, 0.35);
+		}
+
+		.corporate-wrap {
+			width: 100%;
+			background: var(--card);
+			border: 1px solid var(--border);
+			border-radius: 20px;
+			padding: clamp(1.2rem, 3vw, 2.3rem);
+			box-shadow: var(--shadow);
+			backdrop-filter: blur(6px);
+		}
+
+		.corporate-wrap h2 {
+			color: #ffffff;
+			margin-bottom: 0.6rem;
+			font-size: clamp(1.4rem, 3.4vw, 2rem);
+		}
+
+		.corporate-header {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			margin-bottom: 0.4rem;
+		}
+
+		.law {
+			color: var(--muted);
+			margin-bottom: 1.3rem;
+		}
+
+		.info-list {
+			list-style: none;
+			display: grid;
+			gap: 0.75rem;
+		}
+
+		.info-list li {
+			border-left: 3px solid rgba(0, 194, 168, 0.7);
+			padding: 0.5rem 0.75rem;
+			background: rgba(11, 18, 32, 0.32);
+		}
+
+		.partners {
+			margin-top: 0.9rem;
+			padding-left: 1.2rem;
+			color: var(--text);
+		}
+
+		.partners li {
+			margin-bottom: 0.45rem;
+		}
+
+		footer {
+			text-align: center;
+			color: var(--muted);
+			font-size: 0.95rem;
+			padding: 1rem 0 1.4rem;
+		}
+
+		.to-top {
+			position: fixed;
+			right: 1.1rem;
+			bottom: 1.1rem;
+			z-index: 10;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.4rem;
+			border: 0;
+			border-radius: 999px;
+			padding: 0.75rem 1rem;
+			font-size: 0.92rem;
+			line-height: 1;
+			font-weight: 700;
+			cursor: pointer;
+			background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+			color: #03101c;
+			box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+			opacity: 0;
+			transform: translateY(14px);
+			pointer-events: none;
+			transition: opacity 180ms ease, transform 180ms ease;
+		}
+
+		.to-top-icon {
+			display: inline-block;
+			width: 0.42rem;
+			height: 0.42rem;
+			border-left: 0.15rem solid currentColor;
+			border-top: 0.15rem solid currentColor;
+			transform: rotate(45deg);
+			flex-shrink: 0;
+		}
+
+		.to-top-label {
+			display: inline-block;
+			line-height: 1;
+		}
+
+		.to-top.visible {
+			opacity: 1;
+			transform: translateY(0);
+			pointer-events: auto;
+		}
+
+		@keyframes rise-in {
+			from {
+				transform: translateY(14px);
+				opacity: 0;
+			}
+			to {
+				transform: translateY(0);
+				opacity: 1;
+			}
+		}
+
+		@media (max-width: 680px) {
+			.hero-wrap,
+			.corporate-wrap {
+				border-radius: 14px;
+			}
+
+			.hero-wrap {
+				padding: 2rem 1.1rem;
+			}
+
+			.language-switch {
+				top: 0.7rem;
+				right: 0.7rem;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="bg-photo" aria-hidden="true"></div>
+	<div class="bg-grid" aria-hidden="true"></div>
+	<div class="language-switch" aria-label="Language switcher">
+		<button class="lang-option active" id="langGr" aria-pressed="true">GR</button>
+		<button class="lang-option" id="langEn" aria-pressed="false">EN</button>
+	</div>
+
+	<main>
+		<section id="landing">
+			<div class="hero-wrap">
+				<div class="hero-tag">Software Engineering | Web | Automation</div>
+				<h1>Kourkoulis Software Solutions</h1>
+				<p>
+					Αναπτύσσουμε αξιόπιστες ψηφιακές λύσεις για επιχειρήσεις που θέλουν
+					σταθερή τεχνολογική βάση, ταχύτητα στην υλοποίηση και καθαρό κώδικα.
+				</p>
+				<button class="hero-btn" id="scrollBtn">Εταιρικά Στοιχεία</button>
+			</div>
+		</section>
+
+		<section id="corporate">
+			<div class="corporate-wrap">
+				<div class="corporate-header">
+					<h2 id="sectionTitle">ΕΤΑΙΡΙΚΑ ΣΤΟΙΧΕΙΑ</h2>
+				</div>
+				<p class="law" id="lawText">(Άρθρο 47 §2 Ν. 4072/2012)</p>
+
+				<ul class="info-list">
+					<li><strong id="labelCompanyName">Επωνυμία:</strong> <span id="valueCompanyName">ΧΑΡ ΚΟΥΡΚΟΥΛΗΣ ΜΟΝΟΠΡΟΣΩΠΗ Ι.Κ.Ε.</span></li>
+					<li><strong id="labelGemi">Αριθμός ΓΕΜΗ:</strong> 179215403000</li>
+					<li><strong id="labelTaxId">ΑΦΜ:</strong> 802592846 — <strong id="labelTaxOffice">ΔΟΥ:</strong> <span id="valueTaxOffice">ΚΕΦΟΔΕ ΑΤΤΙΚΗΣ</span></li>
+					<li><strong id="labelSeat">Έδρα:</strong> <span id="valueSeat">Αλκαμένους 11, 14565 Αγ. Στέφανος Αττικής</span></li>
+					<li>
+						<strong id="labelPartners">Εταίροι:</strong>
+						<ol class="partners">
+							<li><span id="valuePartnerName">Χαράλαμπος Κουρκούλης</span> — <span id="valuePartnerAddress">Αλκαμένους 11, 14565 Αγ. Στέφανος Αττικής</span> — <span id="labelContribution1">Εισφορά:</span> <span id="valueContributionType">[κεφαλαιακή]</span></li>
+						</ol>
+					</li>
+					<li><strong id="labelManager">Διαχειριστής:</strong> <span id="valueManagerName">Χαράλαμπος Κουρκούλης</span></li>
+				</ul>
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		&copy; <span id="year"></span> Kourkoulis Software Solutions
+	</footer>
+
+	<button class="to-top" id="toTopBtn" aria-label="Scroll to top">
+		<span class="to-top-icon" aria-hidden="true"></span>
+		<span class="to-top-label" id="toTopLabel">Top</span>
+	</button>
+
+	<script>
+		const scrollBtn = document.getElementById("scrollBtn");
+		const toTopBtn = document.getElementById("toTopBtn");
+		const toTopLabel = document.getElementById("toTopLabel");
+		const corporateSection = document.getElementById("corporate");
+		const landingSection = document.getElementById("landing");
+		const year = document.getElementById("year");
+		const langGr = document.getElementById("langGr");
+		const langEn = document.getElementById("langEn");
+		const sectionTitle = document.getElementById("sectionTitle");
+		const lawText = document.getElementById("lawText");
+		const labelCompanyName = document.getElementById("labelCompanyName");
+		const labelGemi = document.getElementById("labelGemi");
+		const labelTaxId = document.getElementById("labelTaxId");
+		const labelTaxOffice = document.getElementById("labelTaxOffice");
+		const labelSeat = document.getElementById("labelSeat");
+		const labelPartners = document.getElementById("labelPartners");
+		const labelContribution1 = document.getElementById("labelContribution1");
+		const labelManager = document.getElementById("labelManager");
+		const valueCompanyName = document.getElementById("valueCompanyName");
+		const valueTaxOffice = document.getElementById("valueTaxOffice");
+		const valueSeat = document.getElementById("valueSeat");
+		const valuePartnerName = document.getElementById("valuePartnerName");
+		const valuePartnerAddress = document.getElementById("valuePartnerAddress");
+		const valueContributionType = document.getElementById("valueContributionType");
+		const valueManagerName = document.getElementById("valueManagerName");
+		const heroTag = document.querySelector(".hero-tag");
+		const heroText = document.querySelector(".hero-wrap p");
+
+		let currentLang = "gr";
+		const translations = {
+			gr: {
+				heroTag: "Software Engineering | Web | Automation",
+				heroButton: "Εταιρικά Στοιχεία",
+				heroText:
+					"Αναπτύσσουμε αξιόπιστες ψηφιακές λύσεις για επιχειρήσεις που θέλουν σταθερή τεχνολογική βάση, ταχύτητα στην υλοποίηση και καθαρό κώδικα.",
+				sectionTitle: "ΕΤΑΙΡΙΚΑ ΣΤΟΙΧΕΙΑ",
+				lawText: "(Άρθρο 47 §2 Ν. 4072/2012)",
+				companyName: "Επωνυμία:",
+				gemi: "Αριθμός ΓΕΜΗ:",
+				taxId: "ΑΦΜ:",
+				taxOffice: "ΔΟΥ:",
+				seat: "Έδρα:",
+				partners: "Εταίροι:",
+				contribution: "Εισφορά:",
+				manager: "Διαχειριστής:",
+				valueCompanyName: "ΧΑΡ ΚΟΥΡΚΟΥΛΗΣ ΜΟΝΟΠΡΟΣΩΠΗ Ι.Κ.Ε.",
+				valueTaxOffice: "ΚΕΦΟΔΕ ΑΤΤΙΚΗΣ",
+				valueSeat: "Αλκαμένους 11, 14565 Αγ. Στέφανος Αττικής",
+				valuePartnerName: "Χαράλαμπος Κουρκούλης",
+				valuePartnerAddress: "Αλκαμένους 11, 14565 Αγ. Στέφανος Αττικής",
+				valueContributionType: "[κεφαλαιακή]",
+				valueManagerName: "Χαράλαμπος Κουρκούλης",
+				top: "Top"
+			},
+			en: {
+				heroTag: "Software Engineering | Web | Automation",
+				heroButton: "Corporate Details",
+				heroText:
+					"We build reliable digital solutions for businesses that need a strong technology foundation, fast delivery, and clean code.",
+				sectionTitle: "CORPORATE DETAILS",
+				lawText: "(Article 47 para. 2 of Law 4072/2012)",
+				companyName: "Company Name:",
+				gemi: "GCR(G.E.M.I.) Num:",
+				taxId: "TIN:",
+				taxOffice: "Tax Office:",
+				seat: "Registered Office:",
+				partners: "Partners:",
+				contribution: "Contribution:",
+				manager: "Manager:",
+				valueCompanyName: "CHAR KOURKOULIS SINGLE-MEMBER P.C.",
+				valueTaxOffice: "KEFODE ATTIKHS",
+				valueSeat: "Alkamenous 11, 14565 Ag. Stefanos Attikis",
+				valuePartnerName: "Charalampos Kourkoulis",
+				valuePartnerAddress: "Alkamenous 11, 14565 Ag. Stefanos Attikis",
+				valueContributionType: "[capital contribution]",
+				valueManagerName: "Charalampos Kourkoulis",
+				top: "Top"
+			}
+		};
+
+		function applyLanguage(lang) {
+			const t = translations[lang];
+			heroTag.textContent = t.heroTag;
+			scrollBtn.textContent = t.heroButton;
+			heroText.textContent = t.heroText;
+			sectionTitle.textContent = t.sectionTitle;
+			lawText.textContent = t.lawText;
+			labelCompanyName.textContent = t.companyName;
+			labelGemi.textContent = t.gemi;
+			labelTaxId.textContent = t.taxId;
+			labelTaxOffice.textContent = t.taxOffice;
+			labelSeat.textContent = t.seat;
+			labelPartners.textContent = t.partners;
+			labelContribution1.textContent = t.contribution;
+			labelManager.textContent = t.manager;
+			valueCompanyName.textContent = t.valueCompanyName;
+			valueTaxOffice.textContent = t.valueTaxOffice;
+			valueSeat.textContent = t.valueSeat;
+			valuePartnerName.textContent = t.valuePartnerName;
+			valuePartnerAddress.textContent = t.valuePartnerAddress;
+			valueContributionType.textContent = t.valueContributionType;
+			valueManagerName.textContent = t.valueManagerName;
+			toTopLabel.textContent = t.top;
+			document.documentElement.lang = lang === "gr" ? "el" : "en";
+		}
+
+		function setLanguage(lang) {
+			currentLang = lang;
+			applyLanguage(currentLang);
+			langGr.classList.toggle("active", currentLang === "gr");
+			langEn.classList.toggle("active", currentLang === "en");
+			langGr.setAttribute("aria-pressed", String(currentLang === "gr"));
+			langEn.setAttribute("aria-pressed", String(currentLang === "en"));
+		}
+
+		langGr.addEventListener("click", () => {
+			setLanguage("gr");
+		});
+
+		langEn.addEventListener("click", () => {
+			setLanguage("en");
+		});
+
+		scrollBtn.addEventListener("click", () => {
+			corporateSection.scrollIntoView({ behavior: "smooth", block: "start" });
+		});
+
+		toTopBtn.addEventListener("click", () => {
+			landingSection.scrollIntoView({ behavior: "smooth", block: "start" });
+		});
+
+		const sectionObserver = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.target.id === "corporate") {
+						toTopBtn.classList.toggle("visible", entry.isIntersecting);
+					}
+				});
+			},
+			{ threshold: 0.45 }
+		);
+
+		sectionObserver.observe(corporateSection);
+
+		year.textContent = String(new Date().getFullYear());
+		setLanguage(currentLang);
+	</script>
+</body>
+</html>
